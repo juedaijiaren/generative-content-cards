@@ -54,14 +54,11 @@ const TRAVEL_RENDER_GUARD = `${COMMON_RENDER_GUARD}
 - 页面可滚动：\`html, body { min-height: 100%; overflow: auto; }\`。不要给 body 设置 \`overflow:hidden\`。
 - \`.canvas\` 可使用 \`width: 1920px; min-height: 1080px; height: auto;\`。预览缩放仍可保留，但 snapshot 模式必须恢复原尺寸和自然高度。
 
-## 卫星主图规则（强制）
+## 地图与图片规则（强制）
 
-- road-trip 的主图优先使用卫星图，不要用纯 SVG 插画替代。
-- 可以使用无需 key 的 ESRI World Imagery 导出图作为底图，例如：
-  \`https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=73,34,96,49&bboxSR=4326&imageSR=4326&size=1280,640&format=jpg&f=image\`
-- 新疆自驾可用 bbox \`73,34,96,49\`；川西可用 \`97,27,105,34\`；云南可用 \`97,21,107,30\`。其他目的地可按地理范围估计 bbox。
-- 卫星图用 \`<img>\` 做底图，上层叠加 SVG 路线、markers、day 图例和半透明信息面板。
-- 除卫星底图外，不要引入其他外部图片、脚本或字体。`;
+- 地图用于判断空间关系，优先展示每日主要节点 markers；暂不绘制路线线条，避免路线重合和错误路径误导。
+- 景点、美食可以使用真实、可公开访问的图片辅助理解；景点优先风光摄影，美食优先真实餐食图。
+- 文案只面向真实游客，不要出现“模板”“阶段规划”“根据需求”等解释生成过程的措辞。`;
 
 function renderGuardFor(categoryKey: CategoryKey): string {
   return categoryKey === 'travel' ? TRAVEL_RENDER_GUARD : KNOWLEDGE_RENDER_GUARD;
