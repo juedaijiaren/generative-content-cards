@@ -43,9 +43,9 @@
 │   ├── lib/             # LLM、生图、任务、存储、渲染逻辑
 │   ├── scripts/         # 本地调试脚本
 │   └── storage/         # 本地生成缓存，已被 git 忽略
-├── 知识类/              # 知识类设计 prompt 和静态样例
-├── 旅游类/              # 旅游类设计 prompt 和静态样例
-├── 食谱类/              # 食谱类设计 prompt 和静态样例
+├── 知识类/              # 知识类设计 prompt；samples/ 仅本地测试使用
+├── 旅游类/              # 旅游类设计 prompt；samples/ 仅本地测试使用
+├── 食谱类/              # 食谱类设计 prompt；samples/ 仅本地测试使用
 ├── docs/                # 开发计划和项目过程记录
 └── README.md
 ```
@@ -228,9 +228,9 @@ The following images are stored in `参考/` and document the visual direction t
 │   ├── lib/             # LLM, image generation, jobs, storage, renderers
 │   ├── scripts/         # Local debugging scripts
 │   └── storage/         # Local generation cache, ignored by git
-├── 知识类/              # Knowledge design prompts and samples
-├── 旅游类/              # Travel design prompts and samples
-├── 食谱类/              # Recipe design prompts and samples
+├── 知识类/              # Knowledge design prompts; samples/ is local-only
+├── 旅游类/              # Travel design prompts; samples/ is local-only
+├── 食谱类/              # Recipe design prompts; samples/ is local-only
 ├── docs/                # Development notes and plans
 └── README.md
 ```

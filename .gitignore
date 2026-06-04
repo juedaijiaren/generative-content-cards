@@ -20,6 +20,11 @@ app/build/
 storage/
 app/storage/
 
+# Local-only design samples
+知识类/samples/
+旅游类/samples/
+食谱类/samples/
+
 # TypeScript and tool caches
 *.tsbuildinfo
 next-env.d.ts
