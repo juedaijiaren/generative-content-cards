@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!-- layout: A -->
+<!-- 输入: "帮我总结一下大模型 Scaling Law 的核心观点" -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Scaling Law 一览图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: #E5E5EA;
+    font-family: -apple-system, "PingFang SC", "SF Pro Display", "Helvetica Neue", Inter, sans-serif;
+    color: #1D1D1F;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .canvas {
+    width: 1920px;
+    height: 1080px;
+    background: #FFFFFF;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+  }
+
+  /* Top band */
+  .top-band {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #D2D2D7;
+    padding-bottom: 20px;
+  }
+  .top-band .title { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+  .top-band .subtitle { font-size: 18px; color: #86868B; }
+
+  /* Hero zone */
+  .hero {
+    flex: 0 0 260px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+  }
+  .hero .key-message {
+    font-size: 76px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 76%;
+  }
+  .hero .accent-bar {
+    width: 8px;
+    height: 180px;
+    background: #1D1D1F;
+    margin-right: 36px;
+  }
+
+  /* Sections row */
+  .sections {
+    flex: 0 0 460px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .section {
+    background: #F5F5F7;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .section-chip {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.02em;
+  }
+  .section-heading {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+  }
+  .section-underline {
+    width: 40px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .section-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1D1D1F;
+  }
+  .section-points li {
+    padding-left: 18px;
+    position: relative;
+  }
+  .section-points li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Visual variants */
+  .visual { margin-top: auto; padding-top: 8px; }
+  .visual-bar { display: flex; flex-direction: column; gap: 8px; }
+  .visual-bar .bar-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #86868B; }
+  .visual-bar .bar-row .bar-label { width: 70px; }
+  .visual-bar .bar-row .bar-track { flex: 1; height: 8px; background: #fff; border-radius: 4px; overflow: hidden; }
+  .visual-bar .bar-row .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+  .visual-bar .bar-row .bar-val { width: 48px; text-align: right; font-weight: 600; color: #1D1D1F; font-variant-numeric: tabular-nums; }
+
+  .visual-compare { display: flex; align-items: stretch; gap: 0; }
+  .visual-compare .vc-cell { flex: 1; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .visual-compare .vc-cell .vc-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #86868B; }
+  .visual-compare .vc-cell .vc-value { font-size: 20px; font-weight: 700; color: #1D1D1F; }
+  .visual-compare .vc-divider { width: 1px; background: #D2D2D7; }
+  .visual-compare .vc-cell.accent .vc-value { color: var(--accent); }
+
+  .visual-quote {
+    border-left: 4px solid var(--accent);
+    padding: 6px 0 6px 14px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1D1D1F;
+    font-style: italic;
+  }
+
+  /* Stats row */
+  .stats {
+    flex: 0 0 160px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    border-top: 1px solid #D2D2D7;
+    border-bottom: 1px solid #D2D2D7;
+    padding: 0 8px;
+  }
+  .key-number {
+    padding: 0 28px;
+    border-right: 1px solid #D2D2D7;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .key-number:last-child { border-right: none; }
+  .key-number .kn-value {
+    font-size: 88px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .key-number .kn-unit {
+    font-size: 32px;
+    font-weight: 400;
+    color: #86868B;
+    margin-left: 4px;
+    letter-spacing: 0;
+  }
+  .key-number .kn-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #86868B;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Footer */
+  .takeaway {
+    flex: 0 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 500;
+    color: #1D1D1F;
+    letter-spacing: -0.005em;
+  }
+  .takeaway::before, .takeaway::after {
+    content: "";
+    flex: 0 0 60px;
+    height: 1px;
+    background: #D2D2D7;
+    margin: 0 24px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="top-band">
+    <div class="title">Scaling Law · 大模型的第一性原理</div>
+    <div class="subtitle">Kaplan et al. 2020 &nbsp;·&nbsp; Hoffmann et al. 2022</div>
+  </div>
+
+  <div class="hero">
+    <div class="accent-bar"></div>
+    <div class="key-message">
+      模型性能可以被<br>
+      精确预测——只要给够<br>
+      算力、数据和参数。
+    </div>
+  </div>
+
+  <div class="sections">
+
+    <div class="section" style="--accent: #0071E3">
+      <div class="section-chip">01</div>
+      <h3 class="section-heading">三大变量</h3>
+      <div class="section-underline"></div>
+      <ul class="section-points">
+        <li>参数量 N — 模型容量</li>
+        <li>数据量 D — 训练 token 总数</li>
+        <li>计算量 C — 大致等于 6·N·D</li>
+      </ul>
+      <div class="visual visual-compare">
+        <div class="vc-cell"><span class="vc-label">LOSS ∝</span><span class="vc-value">N⁻⁰·⁰⁷</span></div>
+        <div class="vc-divider"></div>
+        <div class="vc-cell accent"><span class="vc-label">幂律下降</span><span class="vc-value">可外推</span></div>
+      </div>
+    </div>
+
+    <div class="section" style="--accent: #FF6B35">
+      <div class="section-chip">02</div>
+      <h3 class="section-heading">Chinchilla 修正</h3>
+      <div class="section-underline"></div>
+      <ul class="section-points">
+        <li>原 OpenAI 配方过度扩大参数</li>
+        <li>N 与 D 应同步增长</li>
+        <li>每个参数最优约 20 tokens</li>
+      </ul>
+      <div class="visual visual-bar">
+        <div class="bar-row"><span class="bar-label">GPT-3</span><span class="bar-track"><span class="bar-fill" style="width:88%"></span></span><span class="bar-val">175B</span></div>
+        <div class="bar-row"><span class="bar-label">Chinchilla</span><span class="bar-track"><span class="bar-fill" style="width:35%"></span></span><span class="bar-val">70B</span></div>
+        <div class="bar-row"><span class="bar-label">同算力下</span><span class="bar-track"><span class="bar-fill" style="width:60%" ></span></span><span class="bar-val">更优</span></div>
+      </div>
+    </div>
+
+    <div class="section" style="--accent: #34C759">
+      <div class="section-chip">03</div>
+      <h3 class="section-heading">实践含义</h3>
+      <div class="section-underline"></div>
+      <ul class="section-points">
+        <li>小模型 + 大数据 &gt; 大模型 + 小数据</li>
+        <li>重估所有 70B 以下模型策略</li>
+        <li>数据质量与数据量同等关键</li>
+      </ul>
+      <div class="visual visual-quote">
+        "未来十年的胜负，是数据墙先撞，还是算力墙先撞。"
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stats">
+    <div class="key-number" style="--accent: #0071E3">
+      <div class="kn-value">20<span class="kn-unit">tok/param</span></div>
+      <div class="kn-label">CHINCHILLA 最优配比</div>
+    </div>
+    <div class="key-number" style="--accent: #FF6B35">
+      <div class="kn-value">1.4<span class="kn-unit">T tokens</span></div>
+      <div class="kn-label">70B 模型最优训练量</div>
+    </div>
+    <div class="key-number" style="--accent: #34C759">
+      <div class="kn-value">4<span class="kn-unit">×</span></div>
+      <div class="kn-label">原配方参数过度系数</div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    下一个十年的胜负，由算力、数据、参数的乘积决定。
+  </div>
+
+</div>
+</body>
+</html>
