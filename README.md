@@ -6,9 +6,11 @@
 
 项目目标：**让世界上没有难懂的知识。**
 
-这是一个 vibe coding 过程中逐步打磨出来的生成式内容卡片项目。灵感一部分来自苹果发布会中高度凝练、信息密度很高的一览图：复杂的产品能力、技术参数和核心卖点可以被组织进一张图里，让人快速建立整体印象。另一部分灵感来自数字生命卡兹克分享的纵横分析法，尤其是 [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills) 中 `hv-analysis` 所强调的“纵向追时间深度，横向追同期广度，最终交汇出判断”。
+这是一个 vibe coding 过程中逐步打磨出来的生成式内容卡片项目。整体视觉灵感来自苹果发布会中高度凝练、信息密度很高的一览图：复杂的产品能力、技术参数和核心卖点可以被组织进一张图里，让人快速建立整体印象。
 
-这个项目希望把这种方法产品化：当一个人想了解某个知识、概念、人物、技术、路线或生活方案时，不必先被长篇文字和零散搜索结果淹没，而是先得到一张结构清晰、信息可信、视觉友好的一览图。它不追求替代深度阅读，而是帮助用户更快进入一个主题，建立正确的第一层认知，再决定是否继续深入。
+在知识类卡片中，内容整理方法借鉴了数字生命卡兹克分享的纵横分析法，尤其是 [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills) 中 `hv-analysis` 所强调的“纵向追时间深度，横向追同期广度，最终交汇出判断”。这套方法只用于知识类主题的结构化分析，帮助卡片同时保留历史脉络、横向对比和关键判断；旅游类和食谱类则使用各自更贴近场景的行程规划、步骤拆解和信息编排方式。
+
+这个项目希望把“一览图化”的表达方式产品化：当一个人想了解某个知识、概念、人物、技术、路线或生活方案时，不必先被长篇文字和零散搜索结果淹没，而是先得到一张结构清晰、信息可信、视觉友好的一览图。它不追求替代深度阅读，而是帮助用户更快进入一个主题，建立正确的第一层认知，再决定是否继续深入。
 
 最初目标是“一句话生成可发布的一览图”，后来扩展成面向三类内容的卡片生成工具：
 
@@ -204,9 +206,11 @@ git grep -n -E "sk-[A-Za-z0-9]{8,}|(API_KEY|AUTH_TOKEN|PACKY_API_KEY|OPENAI_API_
 
 Project goal: **make knowledge easier to understand for everyone.**
 
-This project is a generative content-card tool built through an iterative vibe-coding workflow. Part of the inspiration comes from Apple keynote overview graphics, where complex product capabilities, technical details, and key messages are compressed into one highly readable visual. Another part comes from the vertical/horizontal analysis method shared by KKKKhazix, especially the `hv-analysis` skill in [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills), which combines historical depth, horizontal comparison, and final judgment.
+This project is a generative content-card tool built through an iterative vibe-coding workflow. The overall visual inspiration comes from Apple keynote overview graphics, where complex product capabilities, technical details, and key messages are compressed into one highly readable visual.
 
-The ambition is to turn that idea into a practical product. When someone wants to understand a concept, technology, person, route, or life scenario, they should not have to start by drowning in long articles and scattered search results. They should first get a structured, visually clear, and reasonably trustworthy overview card, then decide whether to go deeper.
+For knowledge cards specifically, the content-organization method borrows from the vertical/horizontal analysis method shared by KKKKhazix, especially the `hv-analysis` skill in [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills), which combines historical depth, horizontal comparison, and final judgment. This method is only used for structuring knowledge topics. Travel and recipe cards use their own scenario-specific planning, sequencing, and information-layout logic instead.
+
+The ambition is to turn overview-style expression into a practical product. When someone wants to understand a concept, technology, person, route, or life scenario, they should not have to start by drowning in long articles and scattered search results. They should first get a structured, visually clear, and reasonably trustworthy overview card, then decide whether to go deeper.
 
 It started as a simple “one sentence to one visual overview” prototype and gradually evolved into a multi-category generator for structured visual cards.
 
