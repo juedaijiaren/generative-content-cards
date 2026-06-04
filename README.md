@@ -198,7 +198,7 @@ git grep -n -E "sk-[A-Za-z0-9]{8,}|(API_KEY|AUTH_TOKEN|PACKY_API_KEY|OPENAI_API_
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date)](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
+查看项目 Star 趋势：[Star History](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
 
 ## License
 
@@ -400,7 +400,7 @@ This project should only be pushed to GitHub after the file list and privacy sca
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date)](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
+View the project star trend: [Star History](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
 
 ## License
 
