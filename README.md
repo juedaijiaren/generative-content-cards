@@ -198,7 +198,11 @@ git grep -n -E "sk-[A-Za-z0-9]{8,}|(API_KEY|AUTH_TOKEN|PACKY_API_KEY|OPENAI_API_
 
 ## Star History
 
-查看项目 Star 趋势：[Star History](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
+</picture>
 
 ## License
 
@@ -400,7 +404,11 @@ This project should only be pushed to GitHub after the file list and privacy sca
 
 ## Star History
 
-View the project star trend: [Star History](https://www.star-history.com/#juedaijiaren/generative-content-cards&Date)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
+</picture>
 
 ## License
 
