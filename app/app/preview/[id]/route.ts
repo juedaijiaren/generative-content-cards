@@ -9,14 +9,43 @@ const SNAPSHOT_SCRIPT = `<script>
     var params = new URLSearchParams(location.search);
     if (params.get('mode') === 'snapshot') {
       document.body.classList.add('snapshot');
+      return;
     }
+
+    function fitPreview() {
+      var canvas = document.querySelector('.canvas');
+      if (!canvas) return;
+      var scale = Math.min(1, window.innerWidth / 1920);
+      canvas.style.setProperty('--preview-scale', String(scale));
+      var height = Math.ceil(canvas.scrollHeight * scale);
+      document.documentElement.style.minHeight = height + 'px';
+      document.body.style.minHeight = height + 'px';
+    }
+
+    window.addEventListener('resize', fitPreview);
+    window.addEventListener('load', fitPreview);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitPreview).catch(function () {});
+    }
+    setTimeout(fitPreview, 0);
+    setTimeout(fitPreview, 600);
+    setTimeout(fitPreview, 1600);
   })();
 </script>`;
 
 const PREVIEW_STYLE = `<style>
+  body:not(.snapshot) {
+    margin: 0 !important;
+    overflow: auto !important;
+  }
   body:not(.snapshot) .canvas {
+    --preview-scale: min(1, calc(100vw / 1920px));
+    position: absolute !important;
     top: 0 !important;
-    transform: translateX(calc((100vw - 1920px * var(--scale)) / 2)) scale(var(--scale)) !important;
+    left: 0 !important;
+    width: 1920px !important;
+    transform-origin: 0 0 !important;
+    transform: scale(var(--preview-scale)) !important;
   }
 </style>`;
 
@@ -27,8 +56,18 @@ function injectSnapshotScript(html: string): string {
   return html + PREVIEW_STYLE + SNAPSHOT_SCRIPT;
 }
 
+function avoidSnapshotBlocking(html: string): string {
+  return html.replace(
+    /<script([^>]*\bsrc=(?:"[^"]*"|'[^']*')[^>]*)><\/script>/gi,
+    (match, attrs: string) => {
+      if (/\basync\b|\bdefer\b/i.test(attrs)) return match;
+      return `<script async${attrs}></script>`;
+    }
+  );
+}
+
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   ctx: { params: Promise<{ id: string }> }
 ) {
   const { id } = await ctx.params;
@@ -40,7 +79,10 @@ export async function GET(
     });
   }
 
-  return new Response(injectSnapshotScript(html), {
+  const isSnapshot = req.nextUrl.searchParams.get('mode') === 'snapshot';
+  const previewHtml = injectSnapshotScript(isSnapshot ? avoidSnapshotBlocking(html) : html);
+
+  return new Response(previewHtml, {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',

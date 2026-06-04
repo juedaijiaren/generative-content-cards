@@ -239,7 +239,7 @@ export default function Home() {
     }
   });
   const [submitting, setSubmitting] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const selectedJob = useMemo(
@@ -313,15 +313,20 @@ export default function Home() {
     }
   }, [input, category, llmConfig, imageConfig, submitting]);
 
-  const handleDownload = useCallback(async () => {
-    if (!selectedJob || selectedJob.status !== 'done' || downloading) return;
-    setDownloading(true);
+  const handleOpenJob = useCallback((job: Job) => {
+    if (job.status !== 'done') return;
+    window.open(`/preview/${job.id}`, '_blank', 'noopener,noreferrer');
+  }, []);
+
+  const handleDownloadJob = useCallback(async (job: Job) => {
+    if (job.status !== 'done' || downloadingId) return;
+    setDownloadingId(job.id);
     setError(null);
     try {
       const res = await fetch('/api/snapshot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: selectedJob.id }),
+        body: JSON.stringify({ id: job.id }),
       });
       if (!res.ok) {
         const j = (await res.json().catch(() => ({}))) as { error?: string };
@@ -331,7 +336,7 @@ export default function Home() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${selectedJob.id}.png`;
+      a.download = `${job.id}.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -339,9 +344,9 @@ export default function Home() {
     } catch (err) {
       setError((err as Error).message);
     } finally {
-      setDownloading(false);
+      setDownloadingId(null);
     }
-  }, [selectedJob, downloading]);
+  }, [downloadingId]);
 
   const handleDeleteJob = useCallback(
     async (job: Job) => {
@@ -575,17 +580,6 @@ export default function Home() {
             {submitting ? '提交任务中…' : '生成'}
           </button>
 
-          {selectedJob && (
-            <button
-              type="button"
-              onClick={handleDownload}
-              disabled={selectedJob.status !== 'done' || downloading}
-              className="w-full py-2.5 rounded-xl bg-white border border-zinc-200 text-sm font-medium hover:border-zinc-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {downloading ? '截图中…' : '下载 PNG'}
-            </button>
-          )}
-
           {error && (
             <div className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 leading-relaxed whitespace-pre-wrap">
               {error}
@@ -656,14 +650,34 @@ export default function Home() {
                           </div>
                         )}
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => void handleDeleteJob(job)}
-                        className="shrink-0 rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-400 opacity-100 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 xl:opacity-0 xl:group-hover:opacity-100"
-                        aria-label={`删除 ${job.input}`}
-                      >
-                        删除
-                      </button>
+                      <div className="shrink-0 flex flex-col gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenJob(job)}
+                          disabled={job.status !== 'done'}
+                          className="rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-500 transition-colors hover:border-zinc-400 hover:bg-white hover:text-zinc-900 disabled:opacity-40 disabled:cursor-not-allowed"
+                          aria-label={`新标签页打开 ${job.input}`}
+                        >
+                          打开
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => void handleDownloadJob(job)}
+                          disabled={job.status !== 'done' || Boolean(downloadingId)}
+                          className="rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-500 transition-colors hover:border-zinc-400 hover:bg-white hover:text-zinc-900 disabled:opacity-40 disabled:cursor-not-allowed"
+                          aria-label={`下载 ${job.input} PNG`}
+                        >
+                          {downloadingId === job.id ? '截图' : 'PNG'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => void handleDeleteJob(job)}
+                          className="rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-400 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                          aria-label={`删除 ${job.input}`}
+                        >
+                          删除
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))

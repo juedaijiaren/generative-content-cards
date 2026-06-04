@@ -280,7 +280,7 @@ export function renderTravelHtml(rawData: unknown): string {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${esc(data.destination)} 行程一览</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script async src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root{--bg:${theme.bg};--paper:${theme.paper};--ink:${theme.ink};--muted:#66716d;--hair:rgba(32,41,39,.12);--pine:${theme.pine};--moss:${theme.moss};--brick:${theme.brick};--gold:${theme.gold};--shadow:0 24px 70px rgba(35,40,36,.12);--radius:24px}*{box-sizing:border-box}html,body{min-height:100%;margin:0;background:#ded8cd;color:var(--ink);font-family:"Songti SC","Noto Serif SC","PingFang SC","Hiragino Sans GB",serif}body{padding:32px;display:flex;justify-content:center}.canvas{width:1920px;min-height:1080px;background:linear-gradient(90deg,rgba(32,41,39,.035) 1px,transparent 1px),linear-gradient(rgba(32,41,39,.03) 1px,transparent 1px),var(--bg);background-size:56px 56px;border-radius:30px;overflow:hidden;box-shadow:var(--shadow);position:relative}body.snapshot{padding:0;background:var(--bg)}body.snapshot .canvas{border-radius:0;box-shadow:none}.hero{min-height:442px;display:grid;grid-template-columns:1.08fr .92fr;border-bottom:1px solid var(--hair);background:var(--paper)}.hero-copy{padding:56px 58px 46px;display:flex;flex-direction:column;justify-content:space-between}.kicker{font-family:"Avenir Next","PingFang SC",sans-serif;font-size:15px;letter-spacing:.18em;color:var(--brick);font-weight:800;text-transform:uppercase}h1{margin:18px 0 0;font-size:82px;line-height:.98;letter-spacing:0;font-weight:800}.lead{margin:26px 0 0;max-width:820px;font-size:25px;line-height:1.58;color:#4f5a56}.facts{display:flex;gap:12px;margin-top:32px;font-family:"Avenir Next","PingFang SC",sans-serif;flex-wrap:wrap}.fact{padding:13px 17px;border:1px solid var(--hair);border-radius:999px;background:#f8f4eb;font-size:14px;color:#46534f;font-weight:700}.hero-photo{min-height:442px;background:linear-gradient(180deg,rgba(20,23,20,.08),rgba(20,23,20,.42)),url("${esc(heroImage)}") center/cover;position:relative}.photo-caption{position:absolute;right:28px;bottom:24px;color:rgba(255,255,255,.82);font-family:"Avenir Next","PingFang SC",sans-serif;font-size:12px;text-shadow:0 3px 14px rgba(0,0,0,.32)}.main{padding:32px;display:grid;grid-template-columns:1.18fr .82fr;gap:24px}.card{background:rgba(255,253,248,.94);border:1px solid var(--hair);border-radius:var(--radius);box-shadow:0 16px 48px rgba(35,40,36,.08);overflow:hidden}.map-card{height:642px;display:grid;grid-template-rows:1fr auto}#routeMap{height:520px;width:100%;background:#e5e0d7}.map-note{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--hair);border-top:1px solid var(--hair);font-family:"Avenir Next","PingFang SC",sans-serif}.map-note div{background:var(--paper);padding:18px 20px}.map-note b{display:block;font-size:16px;margin-bottom:7px}.map-note span{display:block;color:var(--muted);font-size:13px;line-height:1.5}.side{display:grid;grid-template-rows:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;height:642px}.route-summary{padding:26px 28px;height:100%}.section-title{margin:0 0 18px;font-size:30px;line-height:1.15;font-weight:800}.route-summary ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-family:"Avenir Next","PingFang SC",sans-serif}.route-summary li{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--hair)}.route-summary li:last-child{border-bottom:0}.route-summary .num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff7ea;color:#18231f;border:2px solid var(--brick);box-shadow:inset 0 0 0 4px rgba(165,83,56,.08),0 8px 18px rgba(35,40,36,.1);font-family:"Avenir Next","PingFang SC",sans-serif;font-weight:400;font-size:22px;line-height:1;margin-top:0}.route-summary strong{display:block;font-size:16px;color:var(--ink)}.route-summary span{display:block;margin-top:5px;color:var(--muted);line-height:1.48;font-size:13px}.food-card{display:grid;grid-template-rows:134px 1fr;height:100%}.food-photo{background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.24)),url("${esc(imageForText(eatItems.join(' '), data.destination))}") center/cover}.food-copy{padding:19px 26px 22px}.food-copy h3{margin:0;font-size:26px}.food-copy p{margin:10px 0 0;font-family:"Avenir Next","PingFang SC",sans-serif;font-size:14px;line-height:1.52;color:#5d6864}.days{grid-column:1/-1;display:grid;grid-template-columns:repeat(${dayColumns},1fr);gap:16px}.day{min-height:410px;display:grid;grid-template-rows:136px auto;background:var(--paper);border:1px solid var(--hair);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 34px rgba(35,40,36,.07)}.day-img{background-size:cover;background-position:center}.day-body{padding:20px;font-family:"Avenir Next","PingFang SC",sans-serif;display:flex;flex-direction:column;gap:14px}.day-head{display:flex;justify-content:space-between;gap:16px;align-items:start}.day-head h3{margin:0;font-size:22px;line-height:1.22}.tag{flex:none;padding:6px 9px;border-radius:999px;background:#edf1ec;color:var(--pine);font-size:12px;font-weight:800}.line{font-size:13px;line-height:1.54;color:#59645f;padding-bottom:12px;border-bottom:1px solid var(--hair)}.detail{display:grid;gap:9px;font-size:13px;line-height:1.5;color:#46534f}.detail b{color:var(--brick);margin-right:6px}.warn{margin-top:auto;background:#f4f0e6;border-left:4px solid var(--gold);padding:11px 12px;color:#5e5447;font-size:13px;line-height:1.45}.visuals{grid-column:1/-1;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:2px}.gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px}.photo-tile{min-height:258px;border-radius:var(--radius);overflow:hidden;position:relative;background-size:cover;background-position:center;border:1px solid var(--hair);box-shadow:0 12px 34px rgba(35,40,36,.07)}.photo-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.45))}.photo-tile span{position:absolute;left:20px;right:20px;bottom:18px;z-index:1;color:white;font-family:"Avenir Next","PingFang SC",sans-serif;font-size:15px;font-weight:800;text-shadow:0 4px 16px rgba(0,0,0,.4)}.practical{padding:28px;background:#f8f5ee}.practical h2{margin:0 0 18px;font-size:32px}.chips{display:grid;gap:12px;font-family:"Avenir Next","PingFang SC",sans-serif}.chip{padding:15px 16px;border:1px solid var(--hair);border-radius:18px;background:var(--paper)}.chip b{display:block;font-size:15px;color:var(--ink)}.chip span{display:block;margin-top:6px;color:var(--muted);font-size:13px;line-height:1.5}.leaflet-control-attribution{font-size:10px}
 </style>
@@ -383,24 +383,31 @@ export function renderTravelHtml(rawData: unknown): string {
 
 <script>
 const mapPoints = ${JSON.stringify(points)};
-const map = L.map('routeMap', { zoomControl: false, attributionControl: true, scrollWheelZoom: false, dragging: false });
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+function initRouteMap() {
+  if (!window.L) {
+    window.setTimeout(initRouteMap, 120);
+    return;
+  }
+  const map = L.map('routeMap', { zoomControl: false, attributionControl: true, scrollWheelZoom: false, dragging: false });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 
-mapPoints.forEach((point) => {
-  const marker = L.divIcon({
-    className: '',
-    html: '<div style="transform:translate(' + point.dx + 'px, ' + point.dy + 'px);background:#fffdf8;border:2px solid #202927;border-radius:18px;padding:8px 11px;box-shadow:0 8px 20px rgba(0,0,0,.16);font:800 13px Avenir Next, sans-serif;white-space:nowrap;"><span style="display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:${theme.brick};color:#fff;margin-right:5px;font-size:11px;">' + point.day + '</span>' + point.name + '</div>',
-    iconAnchor: [18, 18]
+  mapPoints.forEach((point) => {
+    const marker = L.divIcon({
+      className: '',
+      html: '<div style="transform:translate(' + point.dx + 'px, ' + point.dy + 'px);background:#fffdf8;border:2px solid #202927;border-radius:18px;padding:8px 11px;box-shadow:0 8px 20px rgba(0,0,0,.16);font:800 13px Avenir Next, sans-serif;white-space:nowrap;"><span style="display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:${theme.brick};color:#fff;margin-right:5px;font-size:11px;">' + point.day + '</span>' + point.name + '</div>',
+      iconAnchor: [18, 18]
+    });
+    L.marker([point.lat, point.lng], { icon: marker }).addTo(map);
   });
-  L.marker([point.lat, point.lng], { icon: marker }).addTo(map);
-});
 
-const bounds = mapPoints.map((point) => [point.lat, point.lng]);
-if (bounds.length > 1) {
-  map.fitBounds(bounds, { padding: [58, 58] });
-} else {
-  map.setView(bounds[0] || [25.0438, 102.706], 9);
+  const bounds = mapPoints.map((point) => [point.lat, point.lng]);
+  if (bounds.length > 1) {
+    map.fitBounds(bounds, { padding: [58, 58] });
+  } else {
+    map.setView(bounds[0] || [25.0438, 102.706], 9);
+  }
 }
+initRouteMap();
 </script>
 </body>
 </html>`;
