@@ -4,13 +4,21 @@
 
 ## 项目背景
 
-这是一个 vibe coding 过程中逐步打磨出来的生成式内容卡片项目。最初目标是“一句话生成可发布的一览图”，后来扩展成面向三类内容的卡片生成工具：
+项目目标：**让世界上没有难懂的知识。**
+
+这是一个 vibe coding 过程中逐步打磨出来的生成式内容卡片项目。灵感一部分来自苹果发布会中高度凝练、信息密度很高的一览图：复杂的产品能力、技术参数和核心卖点可以被组织进一张图里，让人快速建立整体印象。另一部分灵感来自数字生命卡兹克分享的纵横分析法，尤其是 [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills) 中 `hv-analysis` 所强调的“纵向追时间深度，横向追同期广度，最终交汇出判断”。
+
+这个项目希望把这种方法产品化：当一个人想了解某个知识、概念、人物、技术、路线或生活方案时，不必先被长篇文字和零散搜索结果淹没，而是先得到一张结构清晰、信息可信、视觉友好的一览图。它不追求替代深度阅读，而是帮助用户更快进入一个主题，建立正确的第一层认知，再决定是否继续深入。
+
+最初目标是“一句话生成可发布的一览图”，后来扩展成面向三类内容的卡片生成工具：
 
 - **知识类**：适合概念解释、技术图谱、行业脉络、横向对比和时间线梳理。
 - **旅游类**：适合城市短途、自驾路线、多城市行程、住宿和预算规划。
 - **食谱类**：适合生成带主图、食材、调料、用量、步骤、过程态检查点的菜谱卡片。
 
-项目现在采用“结构化数据 + 本地稳定模板”的方式生成 HTML 卡片。LLM 主要负责把用户的一句话扩展为结构化 JSON，前端预览和 PNG 导出由本地服务完成。这样比让模型直接写完整 HTML 更稳定，也更容易处理长内容、图片和后续模板迭代。
+当前最核心的方向仍然是知识类：让抽象概念变得更容易看懂，让复杂脉络变得更容易分享，让知识从“读完才知道有没有用”变成“先看见结构，再决定深入”。旅游类和食谱类是对同一套生成式卡片能力的场景延伸，用来验证长内容编排、图片生成、任务管理和导出能力。
+
+项目采用“结构化数据 + 本地稳定模板”的方式生成 HTML 卡片。LLM 主要负责把用户的一句话扩展为结构化 JSON，前端预览和 PNG 导出由本地服务完成。这样比让模型直接写完整 HTML 更稳定，也更容易处理长内容、图片、事实校验和后续模板迭代。
 
 ## 核心能力
 
@@ -154,6 +162,13 @@ pnpm llm:smoke
 6. 点击下载 PNG 导出图片。
 7. 不需要的任务可在任务列表中删除。
 
+## 后续优化方向
+
+- **知识类**：继续完善整体知识架构，让输出内容更有效、更正确、更易懂。重点包括事实来源、概念层级、时间线、横向对比、关键结论和适合新手理解的解释方式。
+- **旅游类**：集成地图 API，将整体路线、城市节点、每日行程和交通关系可视化，进一步完善住宿、预算、景点、餐饮和路线节点信息。
+- **食谱类**：当前模板和生图链路已满足阶段需求，暂时没有新的大方向计划。
+- **类目扩展**：未来可能进一步细化知识类，例如人文历史、科学、神学、商业、产品研究等，也可能新增更多适合“一览图化”的内容类目。
+
 ## 本地数据和隐私
 
 生成记录保存到：
@@ -187,7 +202,13 @@ git grep -n -E "sk-[A-Za-z0-9]{8,}|(API_KEY|AUTH_TOKEN|PACKY_API_KEY|OPENAI_API_
 
 ## Background
 
-This project is a generative content-card tool built through an iterative vibe-coding workflow. It started as a simple “one sentence to one visual overview” prototype and gradually evolved into a multi-category generator for structured visual cards.
+Project goal: **make knowledge easier to understand for everyone.**
+
+This project is a generative content-card tool built through an iterative vibe-coding workflow. Part of the inspiration comes from Apple keynote overview graphics, where complex product capabilities, technical details, and key messages are compressed into one highly readable visual. Another part comes from the vertical/horizontal analysis method shared by KKKKhazix, especially the `hv-analysis` skill in [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills), which combines historical depth, horizontal comparison, and final judgment.
+
+The ambition is to turn that idea into a practical product. When someone wants to understand a concept, technology, person, route, or life scenario, they should not have to start by drowning in long articles and scattered search results. They should first get a structured, visually clear, and reasonably trustworthy overview card, then decide whether to go deeper.
+
+It started as a simple “one sentence to one visual overview” prototype and gradually evolved into a multi-category generator for structured visual cards.
 
 It currently supports:
 
@@ -195,7 +216,9 @@ It currently supports:
 - **Travel cards**: city trips, road trips, multi-city itineraries, budgets, hotels, and day-by-day plans.
 - **Recipe cards**: dish photos, ingredients, seasonings, quantities, cooking steps, process images, and beginner-friendly checkpoints.
 
-The app uses a “structured JSON + deterministic local renderer” architecture. The LLM extracts structured data from the user prompt, while the app renders stable HTML templates locally. This makes the output more reliable than asking the model to write the full HTML every time.
+The knowledge category is still the main direction: turning abstract concepts into something easier to read, making complex context easier to share, and helping knowledge move from “read everything first” to “see the structure first, then go deeper.” Travel and recipe cards extend the same card-generation system into practical scenarios, validating long-layout rendering, images, job management, and PNG export.
+
+The app uses a “structured JSON + deterministic local renderer” architecture. The LLM extracts structured data from the user prompt, while the app renders stable HTML templates locally. This makes the output more reliable than asking the model to write the full HTML every time, and it also makes long content, images, fact-checking, and template iteration easier to control.
 
 ## Features
 
@@ -330,6 +353,13 @@ pnpm llm:smoke
 6. Preview the finished HTML card.
 7. Export a PNG snapshot.
 8. Delete records you no longer need.
+
+## Roadmap
+
+- **Knowledge cards**: improve the overall knowledge architecture so generated cards are useful, correct, and easy to understand. Focus areas include sources, concept hierarchy, timelines, horizontal comparison, key takeaways, and beginner-friendly explanations.
+- **Travel cards**: integrate map APIs to visualize routes, city nodes, daily plans, and transportation relationships. Improve hotels, budgets, attractions, restaurants, and itinerary-node details.
+- **Recipe cards**: the current template and image-generation flow are good enough for this stage, so there is no major near-term roadmap.
+- **Category expansion**: future iterations may split knowledge into more specific domains, such as humanities, history, science, theology, business, and product research. More card-friendly categories may also be added.
 
 ## Local Data and Privacy
 
