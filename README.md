@@ -196,18 +196,6 @@ git grep -n -E "sk-[A-Za-z0-9]{8,}|(API_KEY|AUTH_TOKEN|PACKY_API_KEY|OPENAI_API_
 
 本项目当前要求：**推送 GitHub 前必须先人工确认文件清单和隐私扫描结果**。
 
-## Star History
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
-  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=juedaijiaren/generative-content-cards&type=Date" />
-</picture>
-
-## License
-
-本项目采用 [MIT License](LICENSE) 开源。
-
 ---
 
 # Generative Content Cards
@@ -412,4 +400,4 @@ This project should only be pushed to GitHub after the file list and privacy sca
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
+本项目采用 [MIT License](LICENSE) 开源。This project is released under the [MIT License](LICENSE).
