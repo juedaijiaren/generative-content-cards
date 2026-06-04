@@ -24,10 +24,19 @@
 - 支持多种生图模型配置：OpenAI、千问、豆包兼容链路。
 - 生成结果保存在本地，便于预览、截图和二次渲染。
 
+## 参考效果图
+
+以下图片来自 `参考/` 目录，用于记录当前项目期望接近的卡片视觉效果。
+
+![参考效果图一](参考/参考一.png)
+
+![参考效果图二](参考/参考二.png)
+
 ## 目录结构
 
 ```text
 .
+├── 参考/                # README 展示用参考效果图
 ├── app/                 # Next.js 应用主体
 │   ├── app/             # App Router 页面和 API 路由
 │   ├── categories/      # 三类内容的 schema / prompt / meta
@@ -200,10 +209,19 @@ The app uses a “structured JSON + deterministic local renderer” architecture
 - Configurable image providers: OpenAI, Qwen, and Doubao-compatible flows.
 - Local storage for generation JSON, HTML, and generated/downloaded images.
 
+## Reference Outputs
+
+The following images are stored in `参考/` and document the visual direction this project is aiming for.
+
+![Reference output 1](参考/参考一.png)
+
+![Reference output 2](参考/参考二.png)
+
 ## Project Structure
 
 ```text
 .
+├── 参考/                # Reference images shown in README
 ├── app/                 # Next.js application
 │   ├── app/             # App Router pages and API routes
 │   ├── categories/      # Schemas, prompts, and metadata
