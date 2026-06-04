@@ -8,6 +8,8 @@
 
 这是一个 vibe coding 过程中逐步打磨出来的生成式内容卡片项目。整体视觉灵感来自苹果发布会中高度凝练、信息密度很高的一览图：复杂的产品能力、技术参数和核心卖点可以被组织进一张图里，让人快速建立整体印象。
 
+另一个初心来自日常和大模型对话时的体验：模型经常返回一大段长文本，信息量很高，但用户需要花时间阅读、筛选和重组。对于很多“先建立整体认知”的场景，图文结合的一览图比纯文字更快、更直观，也更适合保存和分享。
+
 在知识类卡片中，内容整理方法借鉴了数字生命卡兹克分享的纵横分析法，尤其是 [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills) 中 `hv-analysis` 所强调的“纵向追时间深度，横向追同期广度，最终交汇出判断”。这套方法只用于知识类主题的结构化分析，帮助卡片同时保留历史脉络、横向对比和关键判断；旅游类和食谱类则使用各自更贴近场景的行程规划、步骤拆解和信息编排方式。
 
 这个项目希望把“一览图化”的表达方式产品化：当一个人想了解某个知识、概念、人物、技术、路线或生活方案时，不必先被长篇文字和零散搜索结果淹没，而是先得到一张结构清晰、信息可信、视觉友好的一览图。它不追求替代深度阅读，而是帮助用户更快进入一个主题，建立正确的第一层认知，再决定是否继续深入。
@@ -19,6 +21,8 @@
 - **食谱类**：适合生成带主图、食材、调料、用量、步骤、过程态检查点的菜谱卡片。
 
 当前最核心的方向仍然是知识类：让抽象概念变得更容易看懂，让复杂脉络变得更容易分享，让知识从“读完才知道有没有用”变成“先看见结构，再决定深入”。旅游类和食谱类是对同一套生成式卡片能力的场景延伸，用来验证长内容编排、图片生成、任务管理和导出能力。
+
+更长期的目标是产出可交互的知识图谱：用户先看到主题的一览结构，再针对感兴趣的知识点点击展开详细内容，从“看见知识关系”进入“理解知识深度”。卡片不只是终点，也可以成为继续探索的入口。
 
 项目采用“结构化数据 + 本地稳定模板”的方式生成 HTML 卡片。LLM 主要负责把用户的一句话扩展为结构化 JSON，前端预览和 PNG 导出由本地服务完成。这样比让模型直接写完整 HTML 更稳定，也更容易处理长内容、图片、事实校验和后续模板迭代。
 
@@ -208,6 +212,8 @@ Project goal: **make knowledge easier to understand for everyone.**
 
 This project is a generative content-card tool built through an iterative vibe-coding workflow. The overall visual inspiration comes from Apple keynote overview graphics, where complex product capabilities, technical details, and key messages are compressed into one highly readable visual.
 
+Another motivation comes from everyday conversations with large language models. Models often return long text responses with a lot of useful information, but users still need time to read, filter, and reorganize that content. For many “build the first mental model” scenarios, a visual overview with text and images is faster to absorb, easier to save, and easier to share than plain text.
+
 For knowledge cards specifically, the content-organization method borrows from the vertical/horizontal analysis method shared by KKKKhazix, especially the `hv-analysis` skill in [KKKKhazix/khazix-skills](https://github.com/KKKKhazix/khazix-skills), which combines historical depth, horizontal comparison, and final judgment. This method is only used for structuring knowledge topics. Travel and recipe cards use their own scenario-specific planning, sequencing, and information-layout logic instead.
 
 The ambition is to turn overview-style expression into a practical product. When someone wants to understand a concept, technology, person, route, or life scenario, they should not have to start by drowning in long articles and scattered search results. They should first get a structured, visually clear, and reasonably trustworthy overview card, then decide whether to go deeper.
@@ -221,6 +227,8 @@ It currently supports:
 - **Recipe cards**: dish photos, ingredients, seasonings, quantities, cooking steps, process images, and beginner-friendly checkpoints.
 
 The knowledge category is still the main direction: turning abstract concepts into something easier to read, making complex context easier to share, and helping knowledge move from “read everything first” to “see the structure first, then go deeper.” Travel and recipe cards extend the same card-generation system into practical scenarios, validating long-layout rendering, images, job management, and PNG export.
+
+The longer-term goal is to generate interactive knowledge graphs. Users should first see the overall structure of a topic, then click the knowledge points they care about to reveal deeper explanations. In that direction, a card is not only an output, but also an entry point for further exploration.
 
 The app uses a “structured JSON + deterministic local renderer” architecture. The LLM extracts structured data from the user prompt, while the app renders stable HTML templates locally. This makes the output more reliable than asking the model to write the full HTML every time, and it also makes long content, images, fact-checking, and template iteration easier to control.
 
