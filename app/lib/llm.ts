@@ -148,6 +148,9 @@ type Usage = {
   completion_tokens: number;
   prompt_cache_hit_tokens?: number;
   prompt_cache_miss_tokens?: number;
+  web_search_requests?: number;
+  web_fetch_requests?: number;
+  permission_denials?: number;
 };
 
 type ChatMessage = {
@@ -247,6 +250,10 @@ function cliUsage(usage?: {
   cache_creation_input_tokens?: number;
   cache_read_input_tokens?: number;
   output_tokens?: number;
+  server_tool_use?: {
+    web_search_requests?: number;
+    web_fetch_requests?: number;
+  };
 }): Usage {
   return {
     prompt_tokens:
@@ -256,6 +263,8 @@ function cliUsage(usage?: {
     completion_tokens: usage?.output_tokens ?? 0,
     prompt_cache_hit_tokens: usage?.cache_read_input_tokens ?? 0,
     prompt_cache_miss_tokens: usage?.cache_creation_input_tokens ?? 0,
+    web_search_requests: usage?.server_tool_use?.web_search_requests ?? 0,
+    web_fetch_requests: usage?.server_tool_use?.web_fetch_requests ?? 0,
   };
 }
 
@@ -266,6 +275,7 @@ type ClaudeCliJson = {
   result?: string;
   usage?: Parameters<typeof cliUsage>[0];
   errors?: unknown[];
+  permission_denials?: unknown[];
 };
 
 function extractFirstJsonObject(raw: string): string | null {
@@ -334,6 +344,7 @@ async function callClaudeCliOnce(args: {
   timeoutMs?: number;
   tools?: string;
   maxTurns?: number;
+  permissionMode?: 'default' | 'bypassPermissions' | 'dontAsk';
 }): Promise<{ text: string; usage: Usage }> {
   const fromMessages = args.messages ? messagesToPrompt(args.messages) : null;
   const system = args.system ?? fromMessages?.system ?? '';
@@ -356,6 +367,9 @@ async function callClaudeCliOnce(args: {
   ];
   if (args.tools !== 'default') {
     cliArgs.push('--tools', args.tools ?? '');
+  }
+  if (args.permissionMode) {
+    cliArgs.push('--permission-mode', args.permissionMode);
   }
 
   const raw = await new Promise<string>((resolve, reject) => {
@@ -407,7 +421,10 @@ async function callClaudeCliOnce(args: {
 
   return {
     text: parsed.result ?? '',
-    usage: cliUsage(parsed.usage),
+    usage: {
+      ...cliUsage(parsed.usage),
+      permission_denials: parsed.permission_denials?.length ?? 0,
+    },
   };
 }
 
@@ -497,6 +514,7 @@ export type CompleteTextOpts = {
    */
   tools?: string;
   maxTurns?: number;
+  permissionMode?: 'default' | 'bypassPermissions' | 'dontAsk';
 };
 
 export async function completeText(opts: CompleteTextOpts): Promise<{
@@ -518,6 +536,7 @@ export async function completeText(opts: CompleteTextOpts): Promise<{
       timeoutMs: opts.timeoutMs,
       tools: opts.tools,
       maxTurns: opts.maxTurns,
+      permissionMode: opts.permissionMode,
     });
   }
 

@@ -4,7 +4,11 @@ import { extract, normalizeLLMConfig, type LLMConfig } from '@/lib/llm';
 import { getCategory, isCategoryKey, type CategoryKey } from '@/lib/categories';
 import { listGenerations, saveGenerationData } from '@/lib/storage';
 import { renderGeneration, type RenderResult } from '@/lib/render-generation';
-import { researchKnowledge } from '@/lib/knowledge-research';
+import {
+  enforceKnowledgeFreshness,
+  researchKnowledge,
+  type KnowledgeResearchResult,
+} from '@/lib/knowledge-research';
 import { attachKnowledgeImages } from '@/lib/knowledge-images';
 import { attachRecipeImages } from '@/lib/recipe-images';
 import type { ImageConfig } from '@/lib/image-generation';
@@ -69,10 +73,12 @@ async function runJob(id: string) {
     const category = await getCategory(job.categoryKey);
     let researchBrief: string | undefined;
     let researchUsage: GenerationJob['researchUsage'];
+    let knowledgeResearch: KnowledgeResearchResult | undefined;
 
     if (job.categoryKey === 'knowledge') {
       patchJob(id, { status: 'researching' });
       const research = await researchKnowledge(job.input, job.llmConfig);
+      knowledgeResearch = research;
       researchBrief = research.brief;
       researchUsage = research.usage;
     }
@@ -94,20 +100,25 @@ async function runJob(id: string) {
       maxTokens: job.categoryKey === 'travel' ? 16000 : 8192,
     });
 
+    const freshnessCheckedData =
+      job.categoryKey === 'knowledge' && knowledgeResearch
+        ? enforceKnowledgeFreshness(extractedData, knowledgeResearch)
+        : extractedData;
+
     const data =
       job.categoryKey === 'recipe'
         ? await attachRecipeImages({
             id,
-            data: extractedData,
+            data: freshnessCheckedData,
             imageConfig: job.imageConfig,
           })
         : job.categoryKey === 'knowledge'
           ? await attachKnowledgeImages({
               id,
-              data: extractedData,
+              data: freshnessCheckedData,
               imageConfig: job.imageConfig,
             })
-          : extractedData;
+          : freshnessCheckedData;
 
     await saveGenerationData(id, {
       categoryKey: job.categoryKey,

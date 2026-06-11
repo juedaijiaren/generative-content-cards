@@ -9,6 +9,15 @@
 - 交汇（insights）：把历史脉络和当下截面合成 2-4 条判断。
 - 证据（sources/confidence）：标注关键来源和不确定性；没有可靠来源时不要假装确定。
 
+## 时效性：以研究简报的联网结果为准
+
+- 研究简报会提供“检索截止”“最近更新”和带日期来源。将检索截止日期写入 `researchedAt`。
+- 将最近 12 个月最重要的 2-4 个更新写入 `latestUpdates`，包含明确日期、事件、影响和来源；不要把它们只藏在 sections 或 timeline。
+- `timeline` / `vertical.phases` 的最后节点必须反映研究简报中最新可靠状态，不能停留在模型训练知识的旧年份。
+- 涉及“当前、最新、现任、市场份额、版本、价格、排名、政策”等易变化信息时，必须有来源支撑。研究简报未联网或没有可靠来源时，不得自行补成“最新”事实。
+- 来源尽量填写 `publishedAt`；事件日期与发布日期不同时，在更新 detail 中写事件发生日期。
+- 新信息与旧认知冲突时，以日期更近的一手来源为准，并降低 `confidence` 或在来源 note 中说明。
+
 ## 信息分工：同一个观点只能出现一次
 
 先在内部建立一张“观点去向表”，再输出 JSON。每条事实、解释或判断只能分配给一个最适合的字段，不要换一种说法重复出现。
@@ -96,7 +105,9 @@
   comparisons?: [{ topic, a: {label,value}, b: {label,value} }],
   entities?: [{ name, role }],
   quote?: { text, source },
-  sources?: [{ title, publisher?, url?, note? }],
+  researchedAt?: string,                                  // 联网检索截止日期
+  latestUpdates?: [{ date, title, detail, sourceTitle?, sourceUrl? }],
+  sources?: [{ title, publisher?, url?, publishedAt?, note? }],
   confidence?: 'high' | 'medium' | 'low',
   accent: '#0071E3' | '#FF6B35' | '#34C759' | '#AF52DE' | '#FF3B30'
 }

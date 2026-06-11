@@ -12,7 +12,16 @@ const sourceSchema = z.object({
   title: z.string().min(2).max(60),
   publisher: z.string().max(40).optional(),
   url: z.string().max(240).optional(),
+  publishedAt: z.string().max(24).optional(),
   note: z.string().max(80).optional(),
+});
+
+const latestUpdateSchema = z.object({
+  date: z.string().min(4).max(24),
+  title: z.string().min(2).max(60),
+  detail: z.string().min(4).max(180),
+  sourceTitle: z.string().min(2).max(60).optional(),
+  sourceUrl: z.string().max(240).optional(),
 });
 
 const knowledgeImageSchema = z.object({
@@ -185,6 +194,8 @@ export const knowledgeSchema = z.object({
     })
     .optional(),
 
+  researchedAt: z.string().max(24).optional(),
+  latestUpdates: z.array(latestUpdateSchema).max(4).optional(),
   sources: z.array(sourceSchema).max(6).optional(),
   images: z.array(knowledgeImageSchema).max(4).optional(),
   confidence: z.enum(['high', 'medium', 'low']).optional(),

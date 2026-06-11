@@ -3,7 +3,10 @@ import { ulid } from 'ulid';
 import { extract } from '@/lib/llm';
 import { getCategory, isCategoryKey } from '@/lib/categories';
 import { saveGenerationData } from '@/lib/storage';
-import { researchKnowledge } from '@/lib/knowledge-research';
+import {
+  enforceKnowledgeFreshness,
+  researchKnowledge,
+} from '@/lib/knowledge-research';
 import type { LLMConfig } from '@/lib/llm';
 import type { ImageConfig } from '@/lib/image-generation';
 
@@ -46,12 +49,16 @@ export async function POST(req: NextRequest) {
       ? `用户原始需求：\n${input}\n\n下面是按横纵分析法获得的研究简报，请优先基于它生成结构化 JSON：\n\n${research.brief}`
       : input;
 
-    const { data, usage } = await extract({
+    const { data: extractedData, usage } = await extract({
       system: category.extractPrompt,
       user: extractUser,
       schema: category.schema,
       llmConfig: body.llmConfig,
     });
+    const data =
+      categoryKey === 'knowledge' && research
+        ? enforceKnowledgeFreshness(extractedData, research)
+        : extractedData;
 
     const id = ulid();
     await saveGenerationData(id, {
