@@ -61,12 +61,22 @@ export const knowledgeSchema = z.object({
   sections: z
     .array(
       z.object({
+        role: z
+          .enum([
+            'mechanism',
+            'turning-point',
+            'application',
+            'controversy',
+            'comparison',
+            'implication',
+          ])
+          .optional(),
         heading: z.string().min(2).max(28),
         body: z.string().min(4).max(260),
       })
     )
     .min(2)
-    .max(6),
+    .max(5),
 
   vertical: z
     .object({
@@ -106,6 +116,9 @@ export const knowledgeSchema = z.object({
   insights: z
     .array(
       z.object({
+        type: z
+          .enum(['causal', 'tension', 'prediction', 'decision'])
+          .optional(),
         claim: z.string().min(4).max(90),
         evidence: z.string().min(4).max(160),
       })
