@@ -218,26 +218,10 @@ export default function Home() {
   const [category, setCategory] = useState<CategoryKey>('knowledge');
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [llmConfig, setLlmConfig] = useState<LLMConfig>(() => {
-    if (typeof window === 'undefined') return DEFAULT_LLM_CONFIG;
-    const saved = window.localStorage.getItem('generation.llmConfig');
-    if (!saved) return DEFAULT_LLM_CONFIG;
-    try {
-      return normalizeSavedLlmConfig(JSON.parse(saved) as LLMConfig);
-    } catch {
-      return DEFAULT_LLM_CONFIG;
-    }
-  });
-  const [imageConfig, setImageConfig] = useState<ImageConfig>(() => {
-    if (typeof window === 'undefined') return DEFAULT_IMAGE_CONFIG;
-    const saved = window.localStorage.getItem('generation.imageConfig');
-    if (!saved) return DEFAULT_IMAGE_CONFIG;
-    try {
-      return normalizeSavedImageConfig(JSON.parse(saved) as ImageConfig);
-    } catch {
-      return DEFAULT_IMAGE_CONFIG;
-    }
-  });
+  const [llmConfig, setLlmConfig] = useState<LLMConfig>(DEFAULT_LLM_CONFIG);
+  const [imageConfig, setImageConfig] =
+    useState<ImageConfig>(DEFAULT_IMAGE_CONFIG);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -273,12 +257,45 @@ export default function Home() {
   }, [refreshJobs]);
 
   useEffect(() => {
-    window.localStorage.setItem('generation.llmConfig', JSON.stringify(llmConfig));
-  }, [llmConfig]);
+    const initial = window.setTimeout(() => {
+      const savedLlm = window.localStorage.getItem('generation.llmConfig');
+      const savedImage = window.localStorage.getItem('generation.imageConfig');
+
+      if (savedLlm) {
+        try {
+          setLlmConfig(
+            normalizeSavedLlmConfig(JSON.parse(savedLlm) as LLMConfig)
+          );
+        } catch {
+          setLlmConfig(DEFAULT_LLM_CONFIG);
+        }
+      }
+
+      if (savedImage) {
+        try {
+          setImageConfig(
+            normalizeSavedImageConfig(JSON.parse(savedImage) as ImageConfig)
+          );
+        } catch {
+          setImageConfig(DEFAULT_IMAGE_CONFIG);
+        }
+      }
+
+      setSettingsLoaded(true);
+    }, 0);
+
+    return () => window.clearTimeout(initial);
+  }, []);
 
   useEffect(() => {
+    if (!settingsLoaded) return;
+    window.localStorage.setItem('generation.llmConfig', JSON.stringify(llmConfig));
+  }, [llmConfig, settingsLoaded]);
+
+  useEffect(() => {
+    if (!settingsLoaded) return;
     window.localStorage.setItem('generation.imageConfig', JSON.stringify(imageConfig));
-  }, [imageConfig]);
+  }, [imageConfig, settingsLoaded]);
 
   const handleGenerate = useCallback(async () => {
     const text = input.trim();
